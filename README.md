@@ -13,3 +13,30 @@ The Framework contains structural classes for:
 - Manage and Creation of Web Pages for personal Applications.
 - NTP Client for the timing sincronization.
 
+Base Wifi Settings
+when u start first time the device.You find Ap with name like this ESP8266<mac_device> the password for device is
+<mac_device>:
+  es. AP-SSID -> ESP82665ccf7f10b141
+      AP-PASSWORD -> 5ccf7f10b141
+
+Naturally you can change AP-SSID and Password on manager page.
+
+Base Home page OutOfBox give information of Device
+http://x.x.x.x
+
+Setting page can find at
+http://x.x.x.x/manager
+
+In the manager page you can:
+
+- Change Ap to connect like client
+- Enable NTP ad decide the server
+- Change Local Time
+- Update Firmware OTA
+- Reboot device
+
+
+
+
+
+
