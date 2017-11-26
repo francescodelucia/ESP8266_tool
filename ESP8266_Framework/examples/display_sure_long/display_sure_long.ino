@@ -50,27 +50,6 @@ WiFiTool *tool;
 ESP8266WebServer *myserver;
 HT1632* myHT;
 
-void InfoPage(){
- char myBuff[50]={0};
-  for (uint8_t i=0; i<myserver->args(); i++){
-    if(myserver->argName(i)== "msg"){
-      myserver->arg(i).toCharArray(myBuff,myserver->arg(i).length()+1);
-      myHT->displayScrollingLine(myBuff,0);  
-      //myHT->displayCenterLine(myBuff,0);  
-      
-    }
-    else if(myserver->argName(i)== "data"){
-      myserver->arg(i).toCharArray(myBuff,myserver->arg(i).length()+1);  
-      myHT->displayCenterLine(myBuff,0);  
-   }  
-   else if(myserver->argName(i)== "time"){
-      myserver->arg(i).toCharArray(myBuff,myserver->arg(i).length()+1);  
-      myHT->displayCenterLine(myBuff,0);  
-   }  
-  }
-   tool->server->send(200, "text/html", "Ok!");
-}
-
 
 void setup(void) {
   char deviceIp[32];   
@@ -79,8 +58,7 @@ void setup(void) {
   myHT->displayScrollingLine("ClockNet v0.1 - DLF", 0);
   myHT->displayEffect("Conn..",0);
   tool = new WiFiTool();
-  myserver = tool->server;  
-  tool->AddWebPage((void*)InfoPage,(char*)"/info");
+  myserver = tool->server;
   sprintf(deviceIp,"Ip - %s",(char*)((String)(tool->GetIp())).c_str());
   myHT->setBrightness(10);
   myHT->displayScrollingLine(deviceIp, 0);
