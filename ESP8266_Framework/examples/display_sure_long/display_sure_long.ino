@@ -9,14 +9,6 @@
 #include <WiFiComunication.h>
 #include <cstring>
 
-// comment this line out if you want to minimize program size;
-
-/*
-#define HT1632_DATA     4    // Data pin (pin 7)
-#define HT1632_WRCLK    5    // Write clock pin (pin 5)
-#define HT1632_CS       14    // Chip Select (1, 2, 3, or 4)
-*/
-
 #include <WifiTool.h>
 
 #if ARDUINO < 100
@@ -25,7 +17,7 @@
   #include <Arduino.h>
 #endif
 #include "myfont.h"
-//#include "fontTiny.h"
+
 
 #include "ht1632.h"
 
@@ -38,10 +30,7 @@
  #define PROGMEM
 #endif
 
-//#include "symbols.h"
 #include <Wire.h>
-
-
 
 #define ST_DATA   10
 #define TIME_DATA 11
@@ -49,7 +38,6 @@
 WiFiTool *tool;
 ESP8266WebServer *myserver;
 HT1632* myHT;
-
 
 void setup(void) {
   char deviceIp[32];   
@@ -116,7 +104,6 @@ void loop() {
       Hou_ = tool->GetLTZHours();
       
    }    
-  tool->HandlServerEvent();   
-  
+  tool->HandlServerEvent(); 
 }
 
