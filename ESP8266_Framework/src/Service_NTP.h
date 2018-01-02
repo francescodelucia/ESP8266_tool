@@ -9,7 +9,6 @@ extern "C" {
 #include "user_interface.h"
 }
 
-
 void NTP_data(void);
 
 /* Don't hardwire the IP address or we won't get the benefits of the pool.
@@ -104,10 +103,10 @@ void localSeconds()
 			const unsigned long seventyYears = 2208988800UL;
 			// subtract seventy years:
 			unsigned long epoch = secsSince1900 - seventyYears;
+#ifdef _NTP_DEBUG_    
 			// print Unix time:
 			Serial.println(epoch);
 			// print the hour, minute and second:
-#ifdef _NTP_DEBUG_    
 			Serial.print("The UTC time is ");       // UTC is the time at Greenwich Meridian (GMT)
 #endif    
 			hours = ((epoch  % 86400L) / 3600);

@@ -1,11 +1,11 @@
 #include <WifiTool.h>
 
 
-ESP8266_Tool *tool;
+WiFiTool *tool;
 
 void setup(void)
 {  
-    tool = new ESP8266_Tool();
+    tool = new WiFiTool();
   
 }
 

@@ -1,109 +1,117 @@
+/*
+ * This "#define"s enable the driver of Hardware you want use inside your project
+ * */
+#define DTH11_TEMP_SENSOR ENABLE
+#define METEO_WEB_DATA ENABLE
+#define DISPLAY_HT1632 ENABLE
+/*
+ * This #define , you need change if you want read Meteo Data of Your City
+ * */
+#define LOC_ "Guidonia"
+/*
+ * Just this include you need call for use this project, all data managment,
+ * Wifi Manager, OTA rouitine, Drivers and other are inside the Framework, 
+ * */
 #include <WifiTool.h>
-#include <defs.h>
-#include <drivers.h>
-#include <WifiScanNetwork.h>
-#include <WiFiMem.h>
-#include <Scheduler.h>
-#include <Service_NTP.h>
-#include <LM75.h>
-#include <WiFiComunication.h>
-#include <cstring>
-
-#include <WifiTool.h>
-
-#if ARDUINO < 100
-  #include <WProgram.h>
-#else
-  #include <Arduino.h>
-#endif
-#include "myfont.h"
-
-
-#include "ht1632.h"
-
-#ifdef __AVR__
- #include <avr/io.h>
- #include <avr/pgmspace.h>
-#elif defined(ESP8266)
- #include <pgmspace.h>
-#else
- #define PROGMEM
-#endif
-
-#include <Wire.h>
-
-#define ST_DATA   10
-#define TIME_DATA 11
 
 WiFiTool *tool;
-ESP8266WebServer *myserver;
-HT1632* myHT;
 
-void setup(void) {
-  char deviceIp[32];   
-  myHT = new HT1632(); 
-  myHT->setBrightness(10);
-  myHT->displayScrollingLine("ClockNet v0.1 - DLF", 0);
-  myHT->displayEffect("Conn..",0);
-  tool = new WiFiTool();
-  myserver = tool->server;
-  sprintf(deviceIp,"Ip - %s",(char*)((String)(tool->GetIp())).c_str());
-  myHT->setBrightness(10);
-  myHT->displayScrollingLine(deviceIp, 0);
-    
+/* Routie for Read data from Sensor DHTxx family 
+ * */
+void GetLocalTemp(){
+  char temp[32];
+  int data[2];
+  tool->GetDriversData(DTH11_SENSOR,(void*)&data);
+  sprintf(temp,"Temp casa %dC Umid %d%",data[1],data[0]);
+  
+  /* 
+   * I use display of Sure Electronics HT1632 for show data
+   * */
+  tool->SendDisplayCommand(HT1632_BRIGHT,(void*)10,NULL);
+  tool->SendDisplayCommand(HT1632_FADEUP,NULL,NULL);
+  tool->SendDisplayCommand(HT1632_SCROLL,(void*)&temp[0], 0);                                                
+}
+/*
+ * Routine for chapture data from Web (openweathermap)
+ * 
+ * Note. Remeber to subscribe your personal API TOKEN openweathermap.org to 
+ * use this feature
+ * 
+ * */
+int iMsg = 0;
+void GestMeteo(){
+  struct meteo_data mtd;
+        
+        
+  tool->GetDriversData(METEO_WEB,(void*)&mtd);
+        
+  if(strlen(mtd.temp)>0){          
+    char temp[32];
+    switch(iMsg){
+      case 0:{
+        sprintf(temp,"%s %sC",mtd.localita,mtd.temp);  
+        break;
+      }
+      case 1:{
+        sprintf(temp,"%s Min %sC - Max %sC",mtd.localita,mtd.temp_min,mtd.temp_max);                                     
+        break;
+      }
+      case 2:{      
+        sprintf(temp,"%s Umidita %s%",mtd.localita,mtd.humid);             
+        break;
+      }
+      case 3:{
+        sprintf(temp,"%s previsioni %s - %s",mtd.localita,mtd.weath,mtd.description);                           
+        break;
+      }
+     }
+    /* 
+     * I use display of Sure Electronics HT1632 for show data
+	*/
+     tool->SendDisplayCommand(HT1632_FADEDOWN,NULL,NULL);
+     tool->SendDisplayCommand(HT1632_BRIGHT,(void*)10,NULL);           
+     tool->SendDisplayCommand(HT1632_SCROLL,(void*)&temp[0], 0);              
+     iMsg ++;
+     if(iMsg == 3){iMsg=0;}
+  }
+  GetLocalTemp();
 }
 
-int Sec_ = 0;
-int Min_ = 0;
-int Hou_ = 0;
+/*
+ * Routine for Show Time Clock
+ * 
+ * */
+
 char f =':'; 
-void loop() {
+void Orologio(){
   int tSec_ = tool->GetLTZSeconds();
   int tMin_ = tool->GetLTZMinutes();
   int tHou_ = tool->GetLTZHours();
-  
-    
-  if ((tSec_ != Sec_) ||
-      (tMin_ != Min_) ||
-      (tHou_ != Hou_))
-   {
-      char Time[32];
-      if (f == ':')
-      {
-        f = ' ';  
-      }
-      else
-      {
-        f = ':';
-      }
-      sprintf(Time,"%02d%c%02d",tHou_,f,tMin_);
-      //myHT->fadeDown();            
-      if(tMin_ != Min_){
-        myHT->fadeDown();            
-        int data[2];
-        tool->GetDriversData(DTH11_SENSOR,(void*)&data);
-     
-        char temp[32];
-        sprintf(temp,"Umid:%d%",data[0]);             
-        myHT->setBrightness(10);
-        myHT->displayScrollingLine(temp, 0);                 
-        sprintf(temp,"Temp:%dC",data[1]); 
-        myHT->displayScrollingLine(temp, 0);                 
-        
-        myHT->setBrightness(0);
-        myHT->fadeUp();             
-        myHT->setBrightness(10);         
-        myHT->displayClock(Time,0);      
-      }
-      else{
-        
-        myHT->displayClock(Time,0);
-      }
-      Sec_ = tool->GetLTZSeconds();
-      Min_ = tool->GetLTZMinutes();
-      Hou_ = tool->GetLTZHours();
-      
-   }    
-  tool->HandlServerEvent(); 
+  char Time[32];
+  if (f == ':'){f = ' ';}else{f = ':';}   
+   sprintf(Time,"%02d%c%02d",tHou_,f,tMin_);         
+   tool->SendDisplayCommand(HT1632_CLOCK,(void*)&Time[0],0);
+}
+
+
+void setup(void) {
+  char deviceIp[32];   
+  tool = new WiFiTool();
+  tool->SendDisplayCommand(HT1632_BRIGHT,(void*)10,NULL);
+  tool->SendDisplayCommand(HT1632_SCROLL,(void*)"ClockNet v0.9 - DLF", 0);
+  tool->SendDisplayCommand(HT1632_EFFECT,(void*)"Conn..", 0);
+  sprintf(deviceIp,"Ip - %s",(char*)((String)(tool->GetIp())).c_str());
+  tool->SendDisplayCommand(HT1632_BRIGHT,(void*)10,NULL);
+  tool->SendDisplayCommand(HT1632_SCROLL,(void*)&deviceIp[0], 0);
+  /*
+   * All routine external are added to internal Framework Scheduler 
+   * */
+  tool->AddEvent((void*)Orologio,1000);
+  tool->AddEvent((void*)GestMeteo,60000);
+}
+
+
+void loop() {
+  tool->HandlServerEvent();  
 }
 

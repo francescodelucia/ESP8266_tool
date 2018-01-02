@@ -1,24 +1,25 @@
 #ifndef _DEFINITIONS_
 #define  _DEFINITIONS_
 
-
 #define ENABLE		1
 #define DISABLE		0
 
-#define LM75A_TEMP_SENSOR	DISABLE
-#define TELEGRAM_BOT		DISABLE
-#define DTH11_TEMP_SENSOR	ENABLE
 
+
+
+#include <macros.h>
+#include <devices/dht11.h>
+#include <devices/ht1632.h>
+#include <devices/LM75.h> 
+#include <meteo.h>
 
 #define _BAUD_ 115200
 
 #define _WIFICOM_DEBUG_
 #define _WIFIMEM_DEBUG_
 #define _WIFI_DEBUG_
-
-//#define EN_BOT
-
 #define _NTP_DEBUG_
+
 #define UDP_PORT 			2390 // local port to listen for UDP packets
 #define NTP_SERVER_			"0.it.pool.ntp.org"
 #define NTP_PACKET_SIZE 	48	// NTP time stamp is in the first 48 bytes of the message
@@ -27,20 +28,13 @@
 #define ACCESS_POINT	1
 #define WIFI_CLIENT		0
 
-#if LM75A_TEMP_SENSOR == ENABLE 
-	#define LM75_CHIP	0x00
-	#include <LM75.h> 
-#endif 
-#if DTH11_TEMP_SENSOR == ENABLE
-	#define DTH11_SENSOR 0x01
-	#define DTH11_PORT	 14
-	#include <dht11.h>
+#ifndef TELEGRAM_BOT
+	#define TELEGRAM_BOT DISABLE
 #endif
 #if TELEGRAM_BOT == ENABLE 
 	#define EN_BOT 
 	#include <ESP8266TelegramBOT.h>
 #endif 
-
 
 //
 // Message for  different Language
@@ -56,4 +50,36 @@
 	#define NO_WEB_PAGE			"Pagina non Trovata"
 	#define NO_NETWORKS			"Reti WiFi non trovate!"
 #endif
+
+
+
+#include <WiFiComunication.h>
+#include <Service_NTP.h>
+#include <Scheduler.h>
+#include <WifiScanNetwork.h>
+#include <WiFiMem.h>
+#include <Service_NTP.h>
+#include <drivers.h>
+#include <cstring>
+
+
+#ifndef ESP_8266_01
+	#include <ESP8266HTTPUpdateServer.h>
+#endif
+
+#if ARDUINO < 100
+  #include <WProgram.h>
+#else
+  #include <Arduino.h>
+#endif
+
+#ifdef __AVR__
+ #include <avr/io.h>
+ #include <avr/pgmspace.h>
+#elif defined(ESP8266)
+ #include <pgmspace.h>
+#else
+ #define PROGMEM
+#endif
+
 #endif

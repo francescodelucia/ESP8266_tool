@@ -1,22 +1,6 @@
 #ifndef _WIFI_TOOL_
 #define _WIFI_TOOL_
-
-#include "defs.h"
-#include <WiFiComunication.h>
-#include <WiFiMem.h>
-#include <WifiScanNetwork.h>
-#include <Scheduler.h>
-#include "drivers.h"
-
-#ifndef ESP_8266_01
-	#include <ESP8266HTTPUpdateServer.h>
-#endif
-
-#include <Service_NTP.h>
-#include <cstring>
-//#include <ESP8266TelegramBOT.h>
-
-//USE_DRIVERS()
+#include <defs.h>
 
 extern "C" {
 #include "user_interface.h"
@@ -32,7 +16,9 @@ int LogTimeEvent = 0;
 
 void Diagnostic_Comunication()
 {	
+#ifdef _WIFI_DEBUG_
 	Serial.println("Diagnostic_Comunication: ");
+#endif
 	if(WiFi.status()!= WL_CONNECTED){system_restart();}
 }
 
@@ -300,7 +286,7 @@ class WiFiTool{
 		String SystemInformation()
 		{
 			String tmp;
-			tmp =  "Flash memory:     " +  String(ESP.getFlashChipSize())+" Bytes.\n";
+			tmp =  "Flash memory:     " + String(ESP.getFlashChipSize())+" Bytes.\n";
 			tmp += "Free heap memory: " + String(ESP.getFreeHeap()) + " Bytes.\n";
 			tmp += "Chip speed:       " + String(ESP.getFlashChipSpeed())+" Hz.\n";
 			return tmp;
@@ -421,12 +407,21 @@ class WiFiTool{
 			delay(500);
 			
 			WifiClient = ACCESS_POINT;
-#ifdef _WIFI_DEBUG_
+
 			Serial.begin(_BAUD_);   
-			Serial.println("begin");  
+#ifdef _WIFI_DEBUG_
+			Serial.println("#######################################################");
+			Serial.println("Esp8266 Framework by Francesco De lucia ver 0.180102");
+			Serial.println("This Messages are Debug comunicatio and system Messages");  
+			Serial.println("If you want remove it. Comment following lines:");  
+			Serial.println("\n#define _WIFICOM_DEBUG_");
+			Serial.println("#define _WIFIMEM_DEBUG_");
+			Serial.println("#define _WIFI_DEBUG_");
+			Serial.println("#define _NTP_DEBUG_\n");
+			Serial.println("on file defs.h");
+			Serial.println("#######################################################");  
 #endif	
 			this->wimem = new WiFiMEM(); 
-			//myTimer = new os_timer_t();
 #ifndef ESP_8266_01
 			this->httpUpdater = new ESP8266HTTPUpdateServer();
 #endif
@@ -436,13 +431,7 @@ class WiFiTool{
 			
 			this->scan = new ESP8266_ScanNetwork();
 			this->drivers = new Drivers();
-#if LM75A_TEMP_SENSOR == ENABLE
-			this->drivers->InitDriver(LM75_CHIP);
-#endif
-#if DTH11_TEMP_SENSOR == ENABLE
-			this->drivers->InitDriver(DTH11_SENSOR);
-#endif
-
+			this->drivers->InitDriver();
 			if(this->wimem->GetCRCError() == 1)
 			{
 				this->server = new ESP8266WebServer(WEB_PORT);
@@ -507,7 +496,9 @@ class WiFiTool{
 				this->httpUpdater->setup(this->server);				
 #endif			
 				this->SysScheduler->AddEvent((void*)Diagnostic_Comunication,60000);
-				Serial.printf("ntp %i\n",wimem->GetNTP_ON());				
+				
+				Serial.printf("ntp %i\n",wimem->GetNTP_ON());
+				
 				if(this->wimem->GetNTP_ON()==1){
 					this->sntp = new Service_NTP(this->wimem->GetNTP());
 					this->sntp->SetLocalTimeZone((int)this->wimem->GetNTPTymeZone());
@@ -617,7 +608,10 @@ class WiFiTool{
 		int* GetDriversData(int dType,void* data)
 		{			
 			this->drivers->GetDataDriver(dType,data);
-		}		
+		}
+		void SendDisplayCommand(int dType,void* data,void* optional){
+			this->drivers->DisplayCommand(dType,data,optional);
+		}
 		/*
 		TelegramBOT *SetTelegramBOT(String token, String name, String username, void* callbackRoutine){	
 			this->teleBOT = new TelegramBOT(token, name, username);
@@ -629,6 +623,6 @@ class WiFiTool{
 		TelegramBOT *GetTelegramBot(){
 			return this->teleBOT;
 		}
-*/			
+		*/			
 };
 #endif

@@ -31,9 +31,8 @@ class Scheduler{
 		
 		int AddEvent(void *pCallBack,int millisecond_event)
 		{
-						
 			this->scheduler[_ID_EVENT].cBackRoutine = pCallBack;
-			this->scheduler[_ID_EVENT].ms_event = millisecond_event;			
+			this->scheduler[_ID_EVENT].ms_event = millisecond_event;
 			this->scheduler[_ID_EVENT].ms_event_last_run = millis();
 			this->scheduler[_ID_EVENT].enable = 1;
 			this->_ID_EVENT ++;			
