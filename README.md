@@ -1,7 +1,7 @@
 # ESP8266_tool
 Framework for simple develop Wifi ESP8266 application with Arduino IDE.
 
-This FramewWork is composed by varius Classes (C++) and can help programmer  
+This FramewWork is composed by varius Classes (C++) and can help programmer 
 to develope complex application in tiny time.
 
 The Framework contains structural classes for:
@@ -35,8 +35,60 @@ In the manager page you can:
 - Update Firmware OTA
 - Reboot device
 
+Basic use of WiFiTool Framework.
+
+	#include <WifiTool.h>
 
 
+	WiFiTool *tool;
+
+	void setup(void)
+	{ 
+      //This Enable all funtionality of Wifi Manager, Memory Store ( Wifi,NTP,Time Zone), Remote Update.
+	    tool = new WiFiTool(); 
+	}
+
+	void loop(void)
+	{
+	  tool->HandlServerEvent(); //This is only routine you need call on loop.
+	}
+
+How you can see on simple program, you have immediatlly, a full Wifi Manger, Event Manager and other.
+
+Use of WiFiTool Framework, with integrated event.
+
+	#include <WifiTool.h>
+
+	WiFiTool *tool;
+
+	/*
+	Routine for Show Time Clock
+	*/
+	void Orologio(){
+		/*
+		This data are syncronized on Time Server with internal NTP Client ( you
+		can Manage on Web Manager Page )
+		*/
+		int tSec_ = tool->GetLTZSeconds();
+		int tMin_ = tool->GetLTZMinutes();
+		int tHou_ = tool->GetLTZHours();
+		char Time[32];
+		sprintf(Time,"%02d:%02d",tHou_,tMin_);
+		Serial.printf("Time:%s\n",&Time[0]); 
+	}
 
 
+	void setup(void) {
+		char deviceIp[32];
+		tool = new WiFiTool(); 
+		sprintf(deviceIp,"Ip - %s",(char*)((String)(tool->GetIp())).c_str());
+		/*
+			All routine external are added to internal Framework Scheduler
+			This routine (Orologio) are called every 1000ms (1sec) 
+		*/
+		tool->AddEvent((void*)Orologio,1000);
+	}
 
+	void loop() {
+		tool->HandlServerEvent(); 
+	}
