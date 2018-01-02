@@ -92,3 +92,42 @@ Use of WiFiTool Framework, with integrated event.
 	void loop() {
 		tool->HandlServerEvent(); 
 	}
+	
+Use of WiFiTool Framework, with DTH11 driver.
+
+	/*
+	  with this declaration you enable  condictional compilation to use 
+	  the driver DTH11 Humidity/Tempearture sensor	  
+	  
+	  Note: for the referiment of the other drivers avalible see source code.
+	  Everyone are free to add other.
+	*/
+	#define DTH11_TEMP_SENSOR ENABLE
+	#include <WifiTool.h>
+
+	WiFiTool *tool;
+
+	/* 
+	 Routie for Read data from Sensor DHTxx family 
+	*/
+	void GetLocalTemp(){
+	  char temp[32];	  
+	  int data[2];
+	  //This routine fill pointer 'data' with temperature and humidity read from DTH11 sensor
+	  tool->GetDriversData(DTH11_SENSOR,(void*)&data);
+	  sprintf(temp,"Temp %dC Humid %d%",data[1],data[0]);
+	  Serial.printf("%s\n",&temp[0]);                                    
+	}
+
+	void setup(void) {
+	  char deviceIp[32];   
+	  tool = new WiFiTool();
+	  /*
+	   All routine external are added to internal Framework Scheduler 
+	  */
+	  tool->AddEvent((void*)GetLocalTemp,10000);
+	}
+
+	void loop() {
+	  tool->HandlServerEvent();  
+	}
