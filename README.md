@@ -8,7 +8,7 @@ The Framework contains structural classes for:
 
 - Manage Network comunication
 - Manage Timing event (like a tiny sheduler)
-- Manage Sensor on I2C  protocol for read Values ( At moment only LM75, but in future can simply expanded)
+- Manage Sensor on I2C  protocol for read Values ( At moment HT1632,DHT11,LM75 others in progress)
 - Manage a simplify a creation of Telegram Bot
 - Manage and Creation of Web Pages for personal Applications.
 - NTP Client for the timing sincronization.
