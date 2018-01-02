@@ -95,9 +95,9 @@ void pippo()
   tool->GetTelegramBot()->message[0][0] = "";   // All messages have been replied - reset new messages
 }
 
-#define TOKEN "161837652:AAHf_tuEv7BbxMjRgYuJZNepYzcjRe1qcvA"
-#define NAME "amicodelgiaguaro"
-#define USERNAME "cinsky"
+#define TOKEN "TOKEN_BOT_ID"
+#define NAME "TOKEN_NAME"
+#define USERNAME "TOLEN_USERNAME"
 
 
 void setup(void) {
