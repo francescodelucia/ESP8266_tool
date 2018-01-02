@@ -10,10 +10,10 @@
 	#include <cstring>
 	#include <ESP8266HTTPClient.h>
 	#ifndef APPID
-		#define APPID "91a4a826e67e53e34b9e918b3c82fdba"
+		#define APPID "YOUR-OPENWEATHER-API-TOKEN"
 	#endif
 	#ifndef LOC_
-		#define LOC_ "Guidonia"
+		#define LOC_ "Rome"
 	#endif
 	#define OPEN_WEATHER_API(loc,appid) "http://api.openweathermap.org/data/2.5/weather?q=" loc ",it&units=metric&appid=" appid 
 	#define OPEN_WEATHER_URL OPEN_WEATHER_API(LOC_,APPID)
