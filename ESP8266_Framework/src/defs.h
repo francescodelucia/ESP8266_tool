@@ -11,6 +11,7 @@
 #include <devices/dht11.h>
 #include <devices/ht1632.h>
 #include <devices/LM75.h> 
+#include <devices/SSD1306.h> 
 #include <meteo.h>
 
 #define _BAUD_ 115200

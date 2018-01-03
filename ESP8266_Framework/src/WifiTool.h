@@ -609,8 +609,17 @@ class WiFiTool{
 		{			
 			this->drivers->GetDataDriver(dType,data);
 		}
+		void SendDisplayCommand(int dType,void* data,void* optional,void* optional1,void* optional2){
+			this->drivers->DisplayCommand(dType,data,optional,optional1,optional2);
+		}
 		void SendDisplayCommand(int dType,void* data,void* optional){
-			this->drivers->DisplayCommand(dType,data,optional);
+			this->drivers->DisplayCommand(dType,data,optional,NULL,NULL);
+		}
+		void SendDisplayCommand(int dType,void* data){
+			this->drivers->DisplayCommand(dType,data,NULL,NULL,NULL);
+		}
+		void SendDisplayCommand(int dType){
+			this->drivers->DisplayCommand(dType,NULL,NULL,NULL,NULL);
 		}
 		/*
 		TelegramBOT *SetTelegramBOT(String token, String name, String username, void* callbackRoutine){	
