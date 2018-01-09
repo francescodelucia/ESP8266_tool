@@ -2,7 +2,9 @@
 Framework for simple develop Wifi ESP8266 application with Arduino IDE.
 
 This FramewWork is composed by varius Classes (C++) and can help programmer 
-to develope complex application in tiny time.
+to develope complex application in tiny time. Try to semplify the creation 
+of complex Project with a lot peripherals. Help to use scheduling Routine,
+event manager.
 
 The Framework contains structural classes for:
 
@@ -13,6 +15,7 @@ The Framework contains structural classes for:
    * DHT11 (Temp Humidity Sensor)
    * LM75 (I2C Temp Sensor)
    * SSD1306 (I2C Display - Thanks to https://acrobotic.com/)
+   * Other driver soon.
 - Manage a simplify a creation of Telegram Bot
 - Manage and Creation of Web Pages for personal Applications.
 - NTP Client for the timing sincronization.
