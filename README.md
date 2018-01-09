@@ -8,7 +8,11 @@ The Framework contains structural classes for:
 
 - Manage Network comunication
 - Manage Timing event (like a tiny sheduler)
-- Manage Sensor on I2C  protocol for read Values ( At moment HT1632,DHT11,LM75 others in progress)
+- Manage Sensor on I2C  protocol for read Values , drivers avalibe now :
+   * HT1632 (display)
+   * DHT11 (Temp Humidity Sensor)
+   * LM75 (I2C Temp Sensor)
+   * SSD1306 (I2C Display - Thanks to https://acrobotic.com/)
 - Manage a simplify a creation of Telegram Bot
 - Manage and Creation of Web Pages for personal Applications.
 - NTP Client for the timing sincronization.
