@@ -19,6 +19,15 @@
   information.  All text above must be included in any redistribution. 
 #################################################################################  
 */
+
+/*
+  Francesco De Lucia Note:
+  This is Example variant of SSD1306 display driver of https://acrobotic.com/
+  This is implemntetion of Acrobotics driver inside of my Esp8266 Framework
+
+  This declaration enable SSD1306 driver 
+  Note: for use remeber install Acrobotics SSD1306 driver
+*/
 #define DISPLAY_SSD1306 ENABLE
 #include <WifiTool.h>
 
