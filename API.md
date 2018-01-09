@@ -22,9 +22,11 @@ Main file WiFiTool.h
      es.
      
       tool->AddWebPage((void*)Rele,(char*)"/rele");
+      
       /* 
         Routine "Rele" called when URL are http://{yourip}/rele
       */
+     
      Note. See Project on Example source code.
 			
 			
