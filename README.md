@@ -21,6 +21,7 @@ The Framework contains structural classes for:
 - Manage a simplify a creation of [Telegram Bot](https://github.com/francescodelucia/ESP8266_tool/blob/master/ESP8266_Framework/examples/TestWithBot/TestWithBot.ino) 
 - Manage and Creation of Web Pages for personal Applications.
 - NTP Client for the timing sincronization.
+- [Meteo Information from Web](https://github.com/francescodelucia/ESP8266_tool/blob/master/ESP8266_Framework/examples/Meteo_Temp_clock/Meteo_Temp_clock.ino) cutomizable.
 
 Base Wifi Settings
 when u start first time the device.You find Ap with name like this ESP8266<mac_device> the password for device is
