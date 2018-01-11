@@ -7,7 +7,7 @@
 /*
  * This #define , you need change if you want read Meteo Data of Your City
  * */
-#define LOC_ "Guidonia"
+#define LOC_ "YOUR_CITY_NAME_EX_ROME"
 /*
  * Just this include you need call for use this project, all data managment,
  * Wifi Manager, OTA rouitine, Drivers and other are inside the Framework, 
