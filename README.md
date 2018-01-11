@@ -16,7 +16,8 @@ The Framework contains structural classes for:
    * HT1632 (display)
    * DHT11 (Temp Humidity Sensor)
    * LM75 (I2C Temp Sensor)
-   * SSD1306 (I2C Display - Thanks to https://acrobotic.com/)
+   * SSD1306 (I2C Display - Thanks to https://acrobotic.com/) 
+   	es. https://github.com/francescodelucia/ESP8266_tool/blob/master/ESP8266_Framework/examples/SSD1306/SSD1306.ino
    * Other driver soon.
 - Manage a simplify a creation of Telegram Bot
 - Manage and Creation of Web Pages for personal Applications.
