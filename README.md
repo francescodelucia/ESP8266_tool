@@ -1,6 +1,8 @@
 # ESP8266_tool
 Framework for simple develop Wifi ESP8266 application with Arduino IDE.
 
+API in progress at https://github.com/francescodelucia/ESP8266_tool/wiki
+
 This FramewWork is composed by varius Classes (C++) and can help programmer 
 to develope complex application in tiny time. Try to semplify the creation 
 of complex Project with a lot peripherals. Help to use scheduling Routine,
