@@ -21,7 +21,7 @@ The Framework contains structural classes for:
 - Manage a simplify a creation of [Telegram Bot](https://github.com/francescodelucia/ESP8266_tool/blob/master/ESP8266_Framework/examples/TestWithBot/TestWithBot.ino) 
 - Manage and Creation of Web Pages for personal Applications.
 - NTP Client for the timing sincronization.
-- [Meteo Information from Web](https://github.com/francescodelucia/ESP8266_tool/blob/master/ESP8266_Framework/examples/Meteo_Temp_clock/Meteo_Temp_clock.ino) cutomizable (Remeber to subribe to [OpenWeather](https://openweathermap.org/) and obtain API_KEY for maching request an add API_KEY on [meteo.h](https://github.com/francescodelucia/ESP8266_tool/blob/master/ESP8266_Framework/src/meteo.h) file).
+- [Meteo Information from Web](https://github.com/francescodelucia/ESP8266_tool/blob/master/ESP8266_Framework/examples/Meteo_Temp_clock/Meteo_Temp_clock.ino) cutomizable (Remeber to subribe to [OpenWeather](https://openweathermap.org/) and obtain API_KEY for making request an add API_KEY on [meteo.h](https://github.com/francescodelucia/ESP8266_tool/blob/master/ESP8266_Framework/src/meteo.h) file).
 
 
 Base Wifi Settings
