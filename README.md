@@ -15,7 +15,7 @@ The Framework contains structural classes for:
 - Manage Sensor on I2C  protocol for read Values , drivers avalibe now :
    *  [HT1632 (display)](https://github.com/francescodelucia/ESP8266_tool/blob/master/ESP8266_Framework/examples/Meteo_Temp_clock/Meteo_Temp_clock.ino)
    * [DHT11 (Temp Humidity Sensor)](https://github.com/francescodelucia/ESP8266_tool/blob/master/ESP8266_Framework/examples/Meteo_Temp_clock/Meteo_Temp_clock.ino)
-   * LM75 (I2C Temp Sensor)
+   * [LM75 (I2C Temp Sensor)](https://github.com/francescodelucia/ESP8266_tool/ESP8266_Framework/examples/LM75_Temp/LM75_Temp.ino)
    * [SSD1306](https://github.com/francescodelucia/ESP8266_tool/blob/master/ESP8266_Framework/examples/SSD1306/SSD1306.ino) (I2C Display - Thanks to https://acrobotic.com/)
    * Other driver soon.
 - Manage a simplify a creation of [Telegram Bot](https://github.com/francescodelucia/ESP8266_tool/blob/master/ESP8266_Framework/examples/TestWithBot/TestWithBot.ino) 
