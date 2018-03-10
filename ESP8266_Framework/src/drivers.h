@@ -4,7 +4,6 @@
 
 
 void readData(){
-
 #if DTH11_TEMP_SENSOR == ENABLE
 	dth11->read(DTH11_PORT); 
 #endif
@@ -39,14 +38,16 @@ class Drivers {
 			Wire.begin(); 
 #endif
 			readData();
+#if METEO_WEB_DATA == ENABLE
 			this->driverScheduler->AddEvent((void*)readWebData,180000);
+#endif
 			this->driverScheduler->AddEvent((void*)readData,10000);
 		}
 		void GetDataDriver(int driverType,void* data)
 		{
 #if LM75A_TEMP_SENSOR == ENABLE
 			if (driverType == LM75_CHIP){  
-				lm75->getData();  
+				lm75->getData(data);  
 			}
 #endif		
 #if DTH11_TEMP_SENSOR == ENABLE
