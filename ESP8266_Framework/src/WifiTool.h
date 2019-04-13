@@ -336,14 +336,14 @@ class WiFiTool{
 			tmp +="for( _LTZ in aLTZ ){selectNTP.add( new Option( aLTZ[_LTZ]));};selectNTP.value = currentTZ;";
 			tmp +="selectNTP_CB = document.getElementById('NTP_ON');for( _NTP in aNTP ){selectNTP_CB.add( new Option( aNTP[_NTP]));};";
 			tmp +="selectNTP_CB.value = currentNTP_SEL;";
-
 			tmp +="function LoadDefaultData(){";
-			tmp += "var data = {MAC:'" + String(this->wificom->MAC_char) + "',SERVER_SSID:'ESP8266" + String(this->wificom->MAC_char) + 
-						"',SERVER_PWD:'" + String(this->wificom->MAC_char) +  "',SERVER_PORT:'80',CLIENT_PWD:'',NTP:'ntp1.inrim.it'};";
+			tmp +="var data = {MAC:'" + String(this->wificom->MAC_char) + "',SERVER_SSID:'ESP8266" + String(this->wificom->MAC_char) + "',SERVER_PWD:'" + String(this->wificom->MAC_char) +  "',SERVER_PORT:'80',CLIENT_PWD:'',NTP:'ntp1.inrim.it'};";
 			tmp +="var inputs = Array.prototype.slice.call(document.querySelectorAll('form input'));Object.keys(data).map(function(dataItem){";
-			tmp +="inputs.map(function (inputItem){return (inputItem.name === dataItem) ? (inputItem.value = data[dataItem]) : false;});});}";
-			 
+			tmp +="inputs.map(function (inputItem){return (inputItem.name === dataItem) ? (inputItem.value = data[dataItem]) : false;});});}";	
+			tmp +="document.getElementById('body').style.opacity='100';";
+			tmp +="document.getElementById('msg').style.opacity='0';";		 
 			this->server->send( 200, "text/javascript; charset=UTF-8", tmp);
+			delay(200);
 			
 		}
 		
@@ -359,6 +359,7 @@ class WiFiTool{
 				out +="var id = setInterval(frame, 150);function frame(){if(width >= 100){clearInterval(id);";
 				out +="window.location = './';}else{width++;elem.style.width = width + '%';}}</script></body></html>";
 			this->server->send(200, "text/html", out);
+			
 			system_restart();
 		}
 		
@@ -369,8 +370,9 @@ class WiFiTool{
 
 			String out =  "<html><head><title>ESP8266 device information</title>";
 			out += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
-			out += "<style>body{ background-color: #FFFFFF; font-family: Arial, Helvetica, Sans-Serif; Color: #0000FF; }</style>";
+			out += "<style>body{ background-color: #FFFFFF; font-family: Arial, Helvetica, Sans-Serif; Color: #0000FF;} #body{opacity:0;}</style>";			
 			out += "</head><body style='max-width:1440px'><br><CENTER>ESP8266 Device Configuration<br><br></CENTER>";
+			out += "<div id='msg' style='font-size:largest;'>Loading, please wait..</div><div id='body'>";
 			out += "<form action='./store' method='GET'><CENTER><TABLE>";
 			out += "<tr><td>Device MAC:</td><td><input type='textbox' name='MAC' readonly/></td></tr>";
 			out += "<tr><td>Wifi AP SSID</td><td><input type='textbox' name='SERVER_SSID'/></td></tr>";
@@ -388,9 +390,9 @@ class WiFiTool{
 			out += "<CENTER><input type='button' value='Aggiorna Firmware' onclick='window.location =\"./update\";' style='width:350px'></<CENTER>";
 #endif
 			out += "<CENTER><input type='button' value='Load Default Configuration' onclick='LoadDefaultData();' style='width:350px'></<CENTER>";
-			out += "<CENTER><input type='button' value='Reboot' onclick='window.location =\"./reboot\";' style='width:350px'></<CENTER>";
-			out += "</CENTER><CENTER><PRE>" + this->SystemInformation() + "</PRE></CENTER></body><script type='text/javascript' src='./jscripter'></script></html>";
-			  
+			out += "<CENTER><input type='button' value='Reboot' onclick='if(!confirm(\"Continuare?\")){window.location =\"./reboot\";}' style='width:350px'></<CENTER>";
+			out += "</CENTER><CENTER><PRE>" + this->SystemInformation() + "</PRE></CENTER></div></body><script type='text/javascript' src='./jscripter'></script>";
+			out += "</html>";			  
 			this->server->send(200, "text/html", out);
 		}
 	
@@ -399,10 +401,10 @@ class WiFiTool{
 		 * Costructor overload  where choose if you want customize Root page
 		 * */
 		
-		WiFiTool(int PersonalWebRoot /* 1 = YES ; 0 = NO */):WiFiTool(){
-			this->_personalRootWebPage = PersonalWebRoot;
+		WiFiTool():WiFiTool(0){
 		}
-		WiFiTool(){
+		WiFiTool(int PersonalWebRoot /* 1 = YES ; 0 = NO */){
+			this->_personalRootWebPage = PersonalWebRoot;
 			ESP.eraseConfig();
 			delay(500);
 			
@@ -445,7 +447,6 @@ class WiFiTool{
 					this->server = new ESP8266WebServer((int)this->wimem->GetServerPort());
 				}
 			}
-  
 #ifdef _WIFI_DEBUG_
 			Serial.printf("SSID %s PWD %s\n",this->wimem->GetClientSSID(),this->wimem->GetClientPWD());  
 #endif
@@ -621,7 +622,7 @@ class WiFiTool{
 		void SendDisplayCommand(int dType){
 			this->drivers->DisplayCommand(dType,NULL,NULL,NULL,NULL);
 		}
-		/*
+#ifdef TELEGRAM_BOT
 		TelegramBOT *SetTelegramBOT(String token, String name, String username, void* callbackRoutine){	
 			this->teleBOT = new TelegramBOT(token, name, username);
 			this->teleBOT->begin();
@@ -632,6 +633,6 @@ class WiFiTool{
 		TelegramBOT *GetTelegramBot(){
 			return this->teleBOT;
 		}
-		*/			
+#endif		
 };
 #endif
